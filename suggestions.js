@@ -1,12 +1,24 @@
 // Initialize Parse
-Parse.initialize(
-  "R45ukbqr72fqzId6Z54eJA6NEnnKsLLSLxAm6eEK",
-  "I2Ecepl0Ae8jYsTb62CE6TamdEYU57BJHJp7ovUo"
-); // Replace with your Back4App keys
+Parse.initialize("YOUR_APPLICATION_ID", "YOUR_JAVASCRIPT_KEY");
 Parse.serverURL = "https://parseapi.back4app.com/";
 
 let currentGroup = null;
 let liveQueryClient = null;
+
+// Check if user is logged in
+document.addEventListener("DOMContentLoaded", async () => {
+  const currentUser = Parse.User.current();
+  if (!currentUser) {
+    window.location.href = "index.html"; // Redirect to login page if not logged in
+    return;
+  }
+
+  const savedGroup = localStorage.getItem("currentGroup");
+  if (savedGroup) {
+    document.getElementById("group-name-input").value = savedGroup;
+    joinGroup();
+  }
+});
 
 // Join or create a group
 async function joinGroup() {
@@ -27,17 +39,13 @@ async function joinGroup() {
     currentGroup = groupName;
     localStorage.setItem("currentGroup", currentGroup);
 
-    // Show suggestions content
     document.getElementById("group-login-section").classList.add("hidden");
     document.getElementById("suggestions-content").classList.remove("hidden");
     document.getElementById(
       "group-welcome-message"
     ).textContent = `Group: ${currentGroup}`;
 
-    // Load suggestions for the group
     await loadSuggestions();
-
-    // Subscribe to real-time updates
     subscribeToSuggestions();
   } catch (error) {
     console.error("Error joining group:", error);
@@ -98,7 +106,7 @@ async function subscribeToSuggestions() {
     liveQueryClient = await Parse.LiveQueryClient.connect({
       applicationId: "YOUR_APPLICATION_ID",
       javascriptKey: "YOUR_JAVASCRIPT_KEY",
-      serverURL: "wss://YOUR_APP_ID.back4app.io", // Replace YOUR_APP_ID with your Back4App App ID
+      serverURL: "wss://YOUR_APP_ID.back4app.io",
     });
 
     const subscription = liveQueryClient.subscribe(query);
@@ -158,12 +166,3 @@ async function addSuggestion() {
     suggestionMessage.classList.add("error");
   }
 }
-
-// Check if a group is already joined
-document.addEventListener("DOMContentLoaded", () => {
-  const savedGroup = localStorage.getItem("currentGroup");
-  if (savedGroup) {
-    document.getElementById("group-name-input").value = savedGroup;
-    joinGroup();
-  }
-});

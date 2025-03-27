@@ -1,8 +1,5 @@
 // Initialize Parse
-Parse.initialize(
-  "R45ukbqr72fqzId6Z54eJA6NEnnKsLLSLxAm6eEK",
-  "I2Ecepl0Ae8jYsTb62CE6TamdEYU57BJHJp7ovUo"
-); // Replace with your Back4App keys
+Parse.initialize("YOUR_APPLICATION_ID", "YOUR_JAVASCRIPT_KEY"); // Replace with your Back4App keys
 Parse.serverURL = "https://parseapi.back4app.com/";
 
 const defaultItems = [
@@ -129,13 +126,12 @@ async function loadUserProgress() {
     if (results) {
       items = results.get("items") || [...defaultItems];
     } else {
-      // If no progress exists, initialize with default items
       items = [...defaultItems];
       await saveUserProgress();
     }
   } catch (error) {
     console.error("Error loading user progress:", error);
-    items = [...defaultItems]; // Fallback to default items
+    items = [...defaultItems];
   }
 }
 
@@ -248,8 +244,14 @@ async function deleteItem(index) {
 document.addEventListener("DOMContentLoaded", async () => {
   const currentUser = Parse.User.current();
   if (currentUser) {
-    document.getElementById("username-input").value =
-      currentUser.get("username");
-    await login();
+    const username = currentUser.get("username");
+    localStorage.setItem("currentUser", username);
+    await loadUserProgress();
+    document.getElementById("login-section").classList.add("hidden");
+    document.getElementById("main-content").classList.remove("hidden");
+    document.getElementById(
+      "welcome-message"
+    ).textContent = `Welcome, ${username}! Pack smart for your journey to Dalhousie, Dharamshala, Delhi, Agra, Mathura, and Vrindavan!`;
+    updateLists();
   }
 });

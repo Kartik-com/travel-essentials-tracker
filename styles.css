@@ -1,6 +1,8 @@
 body {
-  font-family: 'Roboto', sans-serif;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1507521628349-6e9b9a9a1b1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+  font-family: "Roboto", sans-serif;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://images.unsplash.com/photo-1507521628349-6e9b9a9a1b1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80")
+      no-repeat center center fixed;
   background-size: cover;
   color: #333333;
   margin: 0;
@@ -14,7 +16,7 @@ body {
 header {
   text-align: center;
   margin-bottom: 20px;
-  background: linear-gradient(45deg, #FF6F61, #FFD700);
+  background: linear-gradient(45deg, #ff6f61, #ffd700);
   padding: 15px;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -43,7 +45,9 @@ nav {
   gap: 10px;
 }
 
-nav a, .scroll-btn, nav button {
+nav a,
+.scroll-btn,
+nav button {
   color: #ffffff;
   text-decoration: none;
   font-weight: bold;
@@ -57,13 +61,17 @@ nav a, .scroll-btn, nav button {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-nav a:hover, .scroll-btn:hover, nav button:hover {
+nav a:hover,
+.scroll-btn:hover,
+nav button:hover {
   background: rgba(0, 0, 0, 0.6);
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.essentials-section, .planning-section, .suggestions-section {
+.essentials-section,
+.planning-section,
+.suggestions-section {
   background: rgba(255, 255, 255, 0.97);
   padding: 20px;
   border-radius: 15px;
@@ -73,7 +81,7 @@ nav a:hover, .scroll-btn:hover, nav button:hover {
 }
 
 h2 {
-  color: #40C4FF;
+  color: #40c4ff;
   font-size: 1.8rem;
   animation: slideUp 0.5s ease;
   margin-bottom: 15px;
@@ -90,26 +98,35 @@ h2 .icon {
   margin-bottom: 20px;
 }
 
-#item-input, #suggestion-input, #username-input, #group-name-input {
+#item-input,
+#suggestion-input,
+#username-input,
+#password-input,
+#group-name-input {
   padding: 12px;
   width: 100%;
   max-width: 300px;
-  border: 2px solid #FFD700;
+  border: 2px solid #ffd700;
   border-radius: 10px;
   font-size: 1rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
 }
 
-#item-input:focus, #suggestion-input:focus, #username-input:focus, #group-name-input:focus {
-  border-color: #FF6F61;
+#item-input:focus,
+#suggestion-input:focus,
+#username-input:focus,
+#password-input:focus,
+#group-name-input:focus {
+  border-color: #ff6f61;
   outline: none;
   box-shadow: 0 0 8px rgba(255, 111, 97, 0.3);
 }
 
 button {
   padding: 12px 25px;
-  background: linear-gradient(45deg, #FF6F61, #FFD700);
+  background: linear-gradient(45deg, #ff6f61, #ffd700);
   color: #ffffff;
   border: none;
   border-radius: 10px;
@@ -118,10 +135,11 @@ button {
   font-weight: bold;
   transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin: 5px;
 }
 
 button:hover {
-  background: linear-gradient(45deg, #FFD700, #FF6F61);
+  background: linear-gradient(45deg, #ffd700, #ff6f61);
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
@@ -133,15 +151,16 @@ button:hover {
 }
 
 .message.success {
-  color: #2E8B57;
+  color: #2e8b57;
 }
 
 .message.error {
-  color: #FF6347;
+  color: #ff6347;
   animation: shake 0.5s ease;
 }
 
-.lists, .suggestions-list {
+.lists,
+.suggestions-list {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
@@ -169,7 +188,7 @@ button:hover {
 }
 
 h3 {
-  color: #FF6F61;
+  color: #ff6f61;
   font-size: 1.5rem;
   margin-bottom: 10px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
@@ -184,7 +203,7 @@ li {
   display: flex;
   align-items: center;
   padding: 12px;
-  border-bottom: 1px solid #40C4FF;
+  border-bottom: 1px solid #40c4ff;
   animation: slideIn 0.5s ease;
   background: #f9f9f9;
   border-radius: 5px;
@@ -213,15 +232,84 @@ li button {
   font-size: 0.9rem;
 }
 
+/* Enhanced Login Section Styles */
 .login-section {
-  background: rgba(255, 255, 255, 0.97);
-  padding: 20px;
-  border-radius: 15px;
+  background: linear-gradient(135deg, #ffffff, #f0f4f8);
+  padding: 30px;
+  border-radius: 20px;
   text-align: center;
   max-width: 400px;
-  margin: 20px auto;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin: 40px auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   border: 1px solid #e0e0e0;
+  position: relative;
+  overflow: hidden;
+  animation: slideUp 0.8s ease;
+}
+
+.login-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 111, 97, 0.1),
+    rgba(64, 196, 255, 0.1)
+  );
+  z-index: 0;
+}
+
+.login-section h2 {
+  color: #ff6f61;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.login-section p {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-section input {
+  display: block;
+  margin: 10px auto;
+  padding: 12px;
+  width: 100%;
+  max-width: 300px;
+  border: 2px solid #ffd700;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.login-section input:focus {
+  border-color: #ff6f61;
+  outline: none;
+  box-shadow: 0 0 8px rgba(255, 111, 97, 0.3);
+}
+
+.login-section button {
+  width: 120px;
+  margin: 5px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-section .message {
+  position: relative;
+  z-index: 1;
 }
 
 .hidden {
@@ -241,7 +329,7 @@ li button {
 }
 
 .quick-nav h3 {
-  color: #40C4FF;
+  color: #40c4ff;
   margin: 0 0 10px 0;
   font-size: 1.2rem;
 }
@@ -253,7 +341,7 @@ li button {
 }
 
 .nav-links a {
-  color: #FF6F61;
+  color: #ff6f61;
   text-decoration: none;
   padding: 8px 12px;
   background: rgba(255, 111, 97, 0.1);
@@ -290,7 +378,7 @@ li button {
 }
 
 .timeline-item::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -310,13 +398,13 @@ li button {
 }
 
 .timeline-header h4 {
-  color: #FF6F61;
+  color: #ff6f61;
   margin: 0;
   font-size: 1.2rem;
 }
 
 .weather {
-  color: #40C4FF;
+  color: #40c4ff;
   font-size: 0.9rem;
   background: rgba(64, 196, 255, 0.1);
   padding: 5px 10px;
@@ -345,7 +433,7 @@ li button {
 }
 
 .travel-tips h3 {
-  color: #40C4FF;
+  color: #40c4ff;
   margin-bottom: 10px;
   font-size: 1.3rem;
 }
@@ -403,260 +491,353 @@ li button {
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes slideIn {
-  from { transform: translateX(-20px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes glow {
-  0% { box-shadow: 0 0 5px #40C4FF; }
-  50% { box-shadow: 0 0 15px #40C4FF; }
-  100% { box-shadow: 0 0 5px #40C4FF; }
+  0% {
+    box-shadow: 0 0 5px #40c4ff;
+  }
+  50% {
+    box-shadow: 0 0 15px #40c4ff;
+  }
+  100% {
+    box-shadow: 0 0 5px #40c4ff;
+  }
 }
 
 @keyframes bounce {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 /* Mobile-Specific Styles */
 @media (max-width: 768px) {
   body {
-      padding: 10px;
-      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1507521628349-6e9b9a9a1b1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
-      background-size: cover;
+    padding: 10px;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+      url("https://images.unsplash.com/photo-1507521628349-6e9b9a9a1b1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80")
+        no-repeat center center fixed;
+    background-size: cover;
   }
 
   header {
-      padding: 10px;
-      border-radius: 10px;
+    padding: 10px;
+    border-radius: 10px;
   }
 
   h1 {
-      font-size: 1.5rem;
+    font-size: 1.5rem;
   }
 
   header p {
-      font-size: 0.9rem;
+    font-size: 0.9rem;
   }
 
   nav {
-      flex-direction: column;
-      gap: 8px;
+    flex-direction: column;
+    gap: 8px;
   }
 
-  nav a, .scroll-btn, nav button {
-      padding: 10px 15px;
-      font-size: 0.9rem;
-      width: 100%;
-      max-width: 250px;
-      margin: 0 auto;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  nav a,
+  .scroll-btn,
+  nav button {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
   }
 
-  .essentials-section, .planning-section, .suggestions-section {
-      padding: 15px;
-      border-radius: 10px;
+  .essentials-section,
+  .planning-section,
+  .suggestions-section {
+    padding: 15px;
+    border-radius: 10px;
   }
 
   h2 {
-      font-size: 1.5rem;
+    font-size: 1.5rem;
   }
 
   h2 .icon {
-      font-size: 1.3rem;
+    font-size: 1.3rem;
   }
 
   .input-section {
-      margin-bottom: 15px;
+    margin-bottom: 15px;
   }
 
-  #item-input, #suggestion-input, #username-input, #group-name-input {
-      padding: 10px;
-      font-size: 0.95rem;
-      max-width: 100%;
+  #item-input,
+  #suggestion-input,
+  #username-input,
+  #password-input,
+  #group-name-input {
+    padding: 10px;
+    font-size: 0.95rem;
+    max-width: 100%;
   }
 
   button {
-      padding: 10px 20px;
-      font-size: 0.95rem;
+    padding: 10px 20px;
+    font-size: 0.95rem;
   }
 
   .message {
-      font-size: 0.85rem;
+    font-size: 0.85rem;
   }
 
   .lists {
-      flex-direction: column;
-      gap: 10px;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .list-container {
-      width: 100%;
-      min-width: unset;
-      padding: 10px;
+    width: 100%;
+    min-width: unset;
+    padding: 10px;
   }
 
   h3 {
-      font-size: 1.3rem;
+    font-size: 1.3rem;
   }
 
   li {
-      padding: 10px;
-      font-size: 0.95rem;
+    padding: 10px;
+    font-size: 0.95rem;
   }
 
   li input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
+    width: 18px;
+    height: 18px;
   }
 
   li span {
-      font-size: 0.95rem;
+    font-size: 0.95rem;
   }
 
   li button {
-      padding: 6px 12px;
-      font-size: 0.85rem;
+    padding: 6px 12px;
+    font-size: 0.85rem;
   }
 
   .suggestions-list {
-      padding: 10px;
+    padding: 10px;
   }
 
   .login-section {
-      padding: 15px;
-      margin: 15px auto;
-      max-width: 100%;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 100%;
+  }
+
+  .login-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .login-section p {
+    font-size: 0.9rem;
+  }
+
+  .login-section input {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  .login-section button {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    width: 100px;
   }
 
   .quick-nav {
-      padding: 8px;
+    padding: 8px;
   }
 
   .quick-nav h3 {
-      font-size: 1rem;
+    font-size: 1rem;
   }
 
   .nav-links {
-      gap: 6px;
+    gap: 6px;
   }
 
   .nav-links a {
-      padding: 6px 10px;
-      font-size: 0.85rem;
+    padding: 6px 10px;
+    font-size: 0.85rem;
   }
 
   .timeline-item {
-      padding: 10px;
-      margin-bottom: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
   }
 
   .timeline-header h4 {
-      font-size: 1.1rem;
+    font-size: 1.1rem;
   }
 
   .weather {
-      font-size: 0.85rem;
-      padding: 4px 8px;
+    font-size: 0.85rem;
+    padding: 4px 8px;
   }
 
   .timeline-content p {
-      font-size: 0.9rem;
+    font-size: 0.9rem;
   }
 
   .travel-tips {
-      padding: 10px;
+    padding: 10px;
   }
 
   .travel-tips h3 {
-      font-size: 1.2rem;
+    font-size: 1.2rem;
   }
 
   .travel-tips li {
-      font-size: 0.9rem;
+    font-size: 0.9rem;
   }
 
   .map-container {
-      padding: 10px;
+    padding: 10px;
   }
 
   .map {
-      height: 250px;
+    height: 250px;
   }
 }
 
-/* Extra Small Screens (e.g., very small phones) */
+/* Extra Small Screens */
 @media (max-width: 480px) {
   h1 {
-      font-size: 1.3rem;
+    font-size: 1.3rem;
   }
 
   header p {
-      font-size: 0.85rem;
+    font-size: 0.85rem;
   }
 
-  nav a, .scroll-btn, nav button {
-      padding: 8px 12px;
-      font-size: 0.85rem;
+  nav a,
+  .scroll-btn,
+  nav button {
+    padding: 8px 12px;
+    font-size: 0.85rem;
   }
 
   h2 {
-      font-size: 1.3rem;
+    font-size: 1.3rem;
   }
 
   h2 .icon {
-      font-size: 1.2rem;
+    font-size: 1.2rem;
   }
 
-  #item-input, #suggestion-input, #username-input, #group-name-input {
-      padding: 8px;
-      font-size: 0.9rem;
+  #item-input,
+  #suggestion-input,
+  #username-input,
+  #password-input,
+  #group-name-input {
+    padding: 8px;
+    font-size: 0.9rem;
   }
 
   button {
-      padding: 8px 15px;
-      font-size: 0.9rem;
+    padding: 8px 15px;
+    font-size: 0.9rem;
   }
 
   h3 {
-      font-size: 1.2rem;
+    font-size: 1.2rem;
   }
 
   li {
-      padding: 8px;
+    padding: 8px;
   }
 
   li span {
-      font-size: 0.9rem;
+    font-size: 0.9rem;
   }
 
   li button {
-      padding: 5px 10px;
-      font-size: 0.8rem;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+
+  .login-section h2 {
+    font-size: 1.3rem;
+  }
+
+  .login-section p {
+    font-size: 0.85rem;
+  }
+
+  .login-section button {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    width: 90px;
   }
 }

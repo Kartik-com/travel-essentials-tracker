@@ -1,3 +1,22 @@
+// Initialize Parse
+Parse.initialize(
+  "R45ukbqr72fqzId6Z54eJA6NEnnKsLLSLxAm6eEK",
+  "I2Ecepl0Ae8jYsTb62CE6TamdEYU57BJHJp7ovUo"
+); // Replace with your Back4App keys
+Parse.serverURL = "https://parseapi.back4app.com/";
+
+// Check if user is logged in
+document.addEventListener("DOMContentLoaded", () => {
+  const currentUser = Parse.User.current();
+  if (!currentUser) {
+    window.location.href = "index.html"; // Redirect to login page if not logged in
+    return;
+  }
+
+  // Initialize the map after confirming the user is logged in
+  initMap();
+});
+
 // Scroll to Map
 function scrollToMap() {
   document.getElementById("map-section").scrollIntoView({ behavior: "smooth" });
@@ -176,8 +195,3 @@ function initMap() {
     mapLoading.classList.remove("active");
   });
 }
-
-// Load map after page content
-document.addEventListener("DOMContentLoaded", () => {
-  initMap();
-});
