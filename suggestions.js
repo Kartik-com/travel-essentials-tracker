@@ -1,9 +1,15 @@
-let currentGroup = null;
-let suggestions = [];
-let currentUser = null;
+// Initialize Parse
+Parse.initialize(
+  "R45ukbqr72fqzId6Z54eJA6NEnnKsLLSLxAm6eEK",
+  "I2Ecepl0Ae8jYsTb62CE6TamdEYU57BJHJp7ovUo"
+); // Replace with your Back4App keys
+Parse.serverURL = "https://parseapi.back4app.com/";
 
-// Join group function
-function joinGroup() {
+let currentGroup = null;
+let liveQueryClient = null;
+
+// Join or create a group
+async function joinGroup() {
   const groupNameInput = document.getElementById("group-name-input");
   const groupName = groupNameInput.value.trim();
   const groupMessage = document.getElementById("group-message");
@@ -17,46 +23,101 @@ function joinGroup() {
     return;
   }
 
-  currentGroup = groupName;
-  localStorage.setItem("currentGroup", currentGroup);
+  try {
+    currentGroup = groupName;
+    localStorage.setItem("currentGroup", currentGroup);
 
-  // Load group-specific suggestions
-  const groupSuggestionsKey = `suggestions_${currentGroup}`;
-  suggestions = JSON.parse(localStorage.getItem(groupSuggestionsKey)) || [];
-  saveSuggestions();
+    // Show suggestions content
+    document.getElementById("group-login-section").classList.add("hidden");
+    document.getElementById("suggestions-content").classList.remove("hidden");
+    document.getElementById(
+      "group-welcome-message"
+    ).textContent = `Group: ${currentGroup}`;
 
-  // Load current user
-  currentUser = localStorage.getItem("currentUser") || "Anonymous";
+    // Load suggestions for the group
+    await loadSuggestions();
 
-  // Show suggestions content
-  document.getElementById("group-login-section").classList.add("hidden");
-  document.getElementById("suggestions-content").classList.remove("hidden");
-  document.getElementById(
-    "group-welcome-message"
-  ).textContent = `Welcome to ${currentGroup}, ${currentUser}! Share your travel suggestions below.`;
-  updateSuggestionsList();
+    // Subscribe to real-time updates
+    subscribeToSuggestions();
+  } catch (error) {
+    console.error("Error joining group:", error);
+    groupMessage.textContent = "Error joining group. Please try again.";
+    groupMessage.classList.add("error");
+  }
 }
 
-// Leave group function
+// Leave the group
 function leaveGroup() {
+  if (liveQueryClient) {
+    liveQueryClient.close();
+  }
   currentGroup = null;
   localStorage.removeItem("currentGroup");
-  suggestions = [];
   document.getElementById("suggestions-content").classList.add("hidden");
   document.getElementById("group-login-section").classList.remove("hidden");
   document.getElementById("group-name-input").value = "";
   document.getElementById("group-message").textContent = "";
+  document.getElementById("suggestions-list").innerHTML = "";
 }
 
-// Save suggestions for the current group
-function saveSuggestions() {
-  if (currentGroup) {
-    const groupSuggestionsKey = `suggestions_${currentGroup}`;
-    localStorage.setItem(groupSuggestionsKey, JSON.stringify(suggestions));
+// Load suggestions for the current group
+async function loadSuggestions() {
+  try {
+    const Suggestions = Parse.Object.extend("Suggestions");
+    const query = new Parse.Query(Suggestions);
+    query.equalTo("groupName", currentGroup);
+    query.descending("createdAt");
+    const suggestions = await query.find();
+
+    const suggestionsList = document.getElementById("suggestions-list");
+    suggestionsList.innerHTML = "";
+
+    suggestions.forEach((suggestion) => {
+      const li = document.createElement("li");
+      const timestamp = new Date(suggestion.get("createdAt")).toLocaleString();
+      li.textContent = `${suggestion.get("suggestion")} (by ${suggestion.get(
+        "submittedBy"
+      )} at ${timestamp})`;
+      suggestionsList.appendChild(li);
+    });
+  } catch (error) {
+    console.error("Error loading suggestions:", error);
+    const suggestionMessage = document.getElementById("suggestion-message");
+    suggestionMessage.textContent = "Error loading suggestions.";
+    suggestionMessage.classList.add("error");
   }
 }
 
-function addSuggestion() {
+// Subscribe to real-time updates for suggestions
+async function subscribeToSuggestions() {
+  try {
+    const Suggestions = Parse.Object.extend("Suggestions");
+    const query = new Parse.Query(Suggestions);
+    query.equalTo("groupName", currentGroup);
+
+    liveQueryClient = await Parse.LiveQueryClient.connect({
+      applicationId: "YOUR_APPLICATION_ID",
+      javascriptKey: "YOUR_JAVASCRIPT_KEY",
+      serverURL: "wss://YOUR_APP_ID.back4app.io", // Replace YOUR_APP_ID with your Back4App App ID
+    });
+
+    const subscription = liveQueryClient.subscribe(query);
+    subscription.on("create", (suggestion) => {
+      const suggestionsList = document.getElementById("suggestions-list");
+      const li = document.createElement("li");
+      const timestamp = new Date(suggestion.get("createdAt")).toLocaleString();
+      li.textContent = `${suggestion.get("suggestion")} (by ${suggestion.get(
+        "submittedBy"
+      )} at ${timestamp})`;
+      suggestionsList.prepend(li);
+    });
+  } catch (error) {
+    console.error("Error subscribing to suggestions:", error);
+  }
+}
+
+// Add a new suggestion
+async function addSuggestion() {
   const suggestionInput = document.getElementById("suggestion-input");
   const suggestionText = suggestionInput.value.trim();
   const anonymousCheckbox = document.getElementById("anonymous-checkbox");
@@ -71,36 +132,31 @@ function addSuggestion() {
     return;
   }
 
-  const submitter = anonymousCheckbox.checked ? "Anonymous" : currentUser;
-  const newSuggestion = {
-    text: suggestionText,
-    submitter: submitter,
-    timestamp: new Date().toLocaleString(),
-  };
-  suggestions.push(newSuggestion);
-  suggestionInput.value = "";
-  anonymousCheckbox.checked = false;
-  suggestionMessage.textContent = "Suggestion added successfully!";
-  suggestionMessage.classList.add("success");
-  setTimeout(() => {
-    suggestionMessage.textContent = "";
-    suggestionMessage.classList.remove("success");
-  }, 2000);
-  saveSuggestions();
-  updateSuggestionsList();
-}
+  const submittedBy = anonymousCheckbox.checked
+    ? "Anonymous"
+    : localStorage.getItem("currentUser") || "Unknown";
 
-function updateSuggestionsList() {
-  const suggestionsList = document.getElementById("suggestions-list");
-  suggestionsList.innerHTML = "";
+  try {
+    const Suggestions = Parse.Object.extend("Suggestions");
+    const suggestion = new Suggestions();
+    suggestion.set("groupName", currentGroup);
+    suggestion.set("suggestion", suggestionText);
+    suggestion.set("submittedBy", submittedBy);
+    await suggestion.save();
 
-  suggestions.forEach((suggestion) => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-            <span>${suggestion.text} (by ${suggestion.submitter} at ${suggestion.timestamp})</span>
-        `;
-    suggestionsList.appendChild(li);
-  });
+    suggestionInput.value = "";
+    anonymousCheckbox.checked = false;
+    suggestionMessage.textContent = "Suggestion added successfully!";
+    suggestionMessage.classList.add("success");
+    setTimeout(() => {
+      suggestionMessage.textContent = "";
+      suggestionMessage.classList.remove("success");
+    }, 2000);
+  } catch (error) {
+    console.error("Error adding suggestion:", error);
+    suggestionMessage.textContent = "Error adding suggestion.";
+    suggestionMessage.classList.add("error");
+  }
 }
 
 // Check if a group is already joined

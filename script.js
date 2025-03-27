@@ -1,4 +1,10 @@
-// Pre-populated essentials
+// Initialize Parse
+Parse.initialize(
+  "R45ukbqr72fqzId6Z54eJA6NEnnKsLLSLxAm6eEK",
+  "I2Ecepl0Ae8jYsTb62CE6TamdEYU57BJHJp7ovUo"
+); // Replace with your Back4App keys
+Parse.serverURL = "https://parseapi.back4app.com/";
+
 const defaultItems = [
   { name: "ID Proof (Aadhar/Passport)", packed: false },
   { name: "Train Tickets", packed: false },
@@ -27,86 +33,139 @@ const defaultItems = [
 let currentUser = null;
 let items = [];
 
-// Login function with error handling
-function login() {
+// Sign up a new user
+async function signUp() {
+  const username = document.getElementById("username-input").value.trim();
+  const password = document.getElementById("password-input").value.trim();
+  const loginMessage = document.getElementById("login-message");
+
+  loginMessage.textContent = "";
+  loginMessage.className = "message";
+
+  if (!username || !password) {
+    loginMessage.textContent = "Please enter both username and password!";
+    loginMessage.classList.add("error");
+    return;
+  }
+
+  const user = new Parse.User();
+  user.set("username", username);
+  user.set("password", password);
+
   try {
-    const usernameInput = document.getElementById("username-input");
-    const username = usernameInput.value.trim();
-    const loginMessage = document.getElementById("login-message");
-
-    loginMessage.textContent = "";
-    loginMessage.className = "message";
-
-    if (!username) {
-      loginMessage.textContent = "Please enter a username!";
-      loginMessage.classList.add("error");
-      return;
-    }
-
-    currentUser = username;
-    localStorage.setItem("currentUser", currentUser);
-
-    // Load user-specific items
-    const userItemsKey = `travelItems_${currentUser}`;
-    try {
-      const storedItems = localStorage.getItem(userItemsKey);
-      items = storedItems ? JSON.parse(storedItems) : [...defaultItems];
-    } catch (error) {
-      console.error("Error loading items from localStorage:", error);
-      items = [...defaultItems]; // Fallback to default items
-    }
-    saveItems();
-
-    // Show main content
-    const loginSection = document.getElementById("login-section");
-    const mainContent = document.getElementById("main-content");
-    const welcomeMessage = document.getElementById("welcome-message");
-
-    if (!loginSection || !mainContent || !welcomeMessage) {
-      throw new Error("Required DOM elements not found");
-    }
-
-    loginSection.classList.add("hidden");
-    mainContent.classList.remove("hidden");
-    welcomeMessage.textContent = `Welcome, ${currentUser}! Pack smart for your journey to Dalhousie, Dharamshala, Delhi, Agra, Mathura, and Vrindavan!`;
-
-    // Update lists asynchronously to improve responsiveness
-    setTimeout(() => {
-      updateLists();
-    }, 0);
+    await user.signUp();
+    loginMessage.textContent = "Sign-up successful! Please log in.";
+    loginMessage.classList.add("success");
+    document.getElementById("username-input").value = "";
+    document.getElementById("password-input").value = "";
   } catch (error) {
-    console.error("Error during login:", error);
-    const loginMessage = document.getElementById("login-message");
-    loginMessage.textContent =
-      "An error occurred during login. Please try again.";
+    loginMessage.textContent = `Error: ${error.message}`;
     loginMessage.classList.add("error");
   }
 }
 
-// Logout function
-function logout() {
-  currentUser = null;
-  localStorage.removeItem("currentUser");
-  items = [];
-  document.getElementById("main-content").classList.add("hidden");
-  document.getElementById("login-section").classList.remove("hidden");
-  document.getElementById("username-input").value = "";
-  document.getElementById("login-message").textContent = "";
-}
+// Log in an existing user
+async function login() {
+  const username = document.getElementById("username-input").value.trim();
+  const password = document.getElementById("password-input").value.trim();
+  const loginMessage = document.getElementById("login-message");
 
-// Save items for the current user
-function saveItems() {
-  if (currentUser) {
-    const userItemsKey = `travelItems_${currentUser}`;
-    try {
-      localStorage.setItem(userItemsKey, JSON.stringify(items));
-    } catch (error) {
-      console.error("Error saving items to localStorage:", error);
-    }
+  loginMessage.textContent = "";
+  loginMessage.className = "message";
+
+  if (!username || !password) {
+    loginMessage.textContent = "Please enter both username and password!";
+    loginMessage.classList.add("error");
+    return;
+  }
+
+  try {
+    const user = await Parse.User.logIn(username, password);
+    currentUser = user;
+    localStorage.setItem("currentUser", username); // For suggestions page
+
+    // Load user progress from Back4App
+    await loadUserProgress();
+
+    // Show main content
+    document.getElementById("login-section").classList.add("hidden");
+    document.getElementById("main-content").classList.remove("hidden");
+    document.getElementById(
+      "welcome-message"
+    ).textContent = `Welcome, ${username}! Pack smart for your journey to Dalhousie, Dharamshala, Delhi, Agra, Mathura, and Vrindavan!`;
+    updateLists();
+  } catch (error) {
+    loginMessage.textContent = `Error: ${error.message}`;
+    loginMessage.classList.add("error");
   }
 }
 
-function addItem() {
+// Log out the user
+async function logout() {
+  try {
+    await Parse.User.logOut();
+    currentUser = null;
+    localStorage.removeItem("currentUser");
+    items = [];
+    document.getElementById("main-content").classList.add("hidden");
+    document.getElementById("login-section").classList.remove("hidden");
+    document.getElementById("username-input").value = "";
+    document.getElementById("password-input").value = "";
+    document.getElementById("login-message").textContent = "";
+  } catch (error) {
+    console.error("Error logging out:", error);
+  }
+}
+
+// Load user progress from Back4App
+async function loadUserProgress() {
+  const username = Parse.User.current().get("username");
+  const UserProgress = Parse.Object.extend("UserProgress");
+  const query = new Parse.Query(UserProgress);
+  query.equalTo("username", username);
+
+  try {
+    const results = await query.first();
+    if (results) {
+      items = results.get("items") || [...defaultItems];
+    } else {
+      // If no progress exists, initialize with default items
+      items = [...defaultItems];
+      await saveUserProgress();
+    }
+  } catch (error) {
+    console.error("Error loading user progress:", error);
+    items = [...defaultItems]; // Fallback to default items
+  }
+}
+
+// Save user progress to Back4App
+async function saveUserProgress() {
+  const username = Parse.User.current().get("username");
+  const UserProgress = Parse.Object.extend("UserProgress");
+  const query = new Parse.Query(UserProgress);
+  query.equalTo("username", username);
+
+  try {
+    const result = await query.first();
+    let userProgress;
+
+    if (result) {
+      userProgress = result;
+    } else {
+      userProgress = new UserProgress();
+      userProgress.set("username", username);
+    }
+
+    userProgress.set("items", items);
+    await userProgress.save();
+  } catch (error) {
+    console.error("Error saving user progress:", error);
+  }
+}
+
+// Add a new item to the packing list
+async function addItem() {
   const input = document.getElementById("item-input");
   const itemName = input.value.trim();
   const message = document.getElementById("message");
@@ -142,62 +201,55 @@ function addItem() {
     message.textContent = "";
     message.classList.remove("success");
   }, 2000);
-  saveItems();
+  await saveUserProgress();
   updateLists();
 }
 
+// Update the UI with the current packing list
 function updateLists() {
-  try {
-    const unpackedList = document.getElementById("unpacked-list");
-    const packedList = document.getElementById("packed-list");
-    if (!unpackedList || !packedList) {
-      throw new Error("List containers not found");
+  const unpackedList = document.getElementById("unpacked-list");
+  const packedList = document.getElementById("packed-list");
+  unpackedList.innerHTML = "";
+  packedList.innerHTML = "";
+
+  items.forEach((item, index) => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+            <input type="checkbox" onchange="togglePacked(${index})" ${
+      item.packed ? "checked" : ""
+    }>
+            <span>${item.name}</span>
+            <button onclick="deleteItem(${index})">Delete</button>
+        `;
+    if (item.packed) {
+      li.classList.add("packed");
+      packedList.appendChild(li);
+    } else {
+      unpackedList.appendChild(li);
     }
-
-    unpackedList.innerHTML = "";
-    packedList.innerHTML = "";
-
-    items.forEach((item, index) => {
-      const li = document.createElement("li");
-      li.innerHTML = `
-              <input type="checkbox" onchange="togglePacked(${index})" ${
-        item.packed ? "checked" : ""
-      }>
-              <span>${item.name}</span>
-              <button onclick="deleteItem(${index})">Delete</button>
-          `;
-      if (item.packed) {
-        li.classList.add("packed");
-        packedList.appendChild(li);
-      } else {
-        unpackedList.appendChild(li);
-      }
-    });
-  } catch (error) {
-    console.error("Error updating lists:", error);
-    const message = document.getElementById("message");
-    message.textContent = "Error updating lists. Please refresh the page.";
-    message.classList.add("error");
-  }
+  });
 }
 
-function togglePacked(index) {
+// Toggle the packed status of an item
+async function togglePacked(index) {
   items[index].packed = !items[index].packed;
-  saveItems();
+  await saveUserProgress();
   updateLists();
 }
 
-function deleteItem(index) {
+// Delete an item from the packing list
+async function deleteItem(index) {
   items.splice(index, 1);
-  saveItems();
+  await saveUserProgress();
   updateLists();
 }
 
 // Check if a user is already logged in
-document.addEventListener("DOMContentLoaded", () => {
-  const savedUser = localStorage.getItem("currentUser");
-  if (savedUser) {
-    document.getElementById("username-input").value = savedUser;
-    login();
+document.addEventListener("DOMContentLoaded", async () => {
+  const currentUser = Parse.User.current();
+  if (currentUser) {
+    document.getElementById("username-input").value =
+      currentUser.get("username");
+    await login();
   }
 });

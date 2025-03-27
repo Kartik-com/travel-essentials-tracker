@@ -9,16 +9,24 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <!-- Add Parse SDK -->
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
   </head>
   <body>
     <div id="login-section" class="login-section">
       <h2>Welcome to Travel Essentials Tracker</h2>
-      <p>Please enter your username to track your packing progress.</p>
+      <p>Please sign up or log in to track your packing progress.</p>
       <input
         type="text"
         id="username-input"
         placeholder="Enter your username"
       />
+      <input
+        type="password"
+        id="password-input"
+        placeholder="Enter your password"
+      />
+      <button onclick="signUp()">Sign Up</button>
       <button onclick="login()">Login</button>
       <p id="login-message" class="message"></p>
     </div>
