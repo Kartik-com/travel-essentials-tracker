@@ -1,4 +1,4 @@
-// Pre-populated essentials (used as a default if no data exists in localStorage)
+// Pre-populated essentials
 const defaultItems = [
   { name: "ID Proof (Aadhar/Passport)", packed: false },
   { name: "Train Tickets", packed: false },
@@ -24,11 +24,86 @@ const defaultItems = [
   { name: "Cap/Hat", packed: false },
 ];
 
-// Load items from localStorage or use defaultItems if none exist
-let items = JSON.parse(localStorage.getItem("travelItems")) || defaultItems;
+let currentUser = null;
+let items = [];
 
+// Login function with error handling
+function login() {
+  try {
+    const usernameInput = document.getElementById("username-input");
+    const username = usernameInput.value.trim();
+    const loginMessage = document.getElementById("login-message");
+
+    loginMessage.textContent = "";
+    loginMessage.className = "message";
+
+    if (!username) {
+      loginMessage.textContent = "Please enter a username!";
+      loginMessage.classList.add("error");
+      return;
+    }
+
+    currentUser = username;
+    localStorage.setItem("currentUser", currentUser);
+
+    // Load user-specific items
+    const userItemsKey = `travelItems_${currentUser}`;
+    try {
+      const storedItems = localStorage.getItem(userItemsKey);
+      items = storedItems ? JSON.parse(storedItems) : [...defaultItems];
+    } catch (error) {
+      console.error("Error loading items from localStorage:", error);
+      items = [...defaultItems]; // Fallback to default items
+    }
+    saveItems();
+
+    // Show main content
+    const loginSection = document.getElementById("login-section");
+    const mainContent = document.getElementById("main-content");
+    const welcomeMessage = document.getElementById("welcome-message");
+
+    if (!loginSection || !mainContent || !welcomeMessage) {
+      throw new Error("Required DOM elements not found");
+    }
+
+    loginSection.classList.add("hidden");
+    mainContent.classList.remove("hidden");
+    welcomeMessage.textContent = `Welcome, ${currentUser}! Pack smart for your journey to Dalhousie, Dharamshala, Delhi, Agra, Mathura, and Vrindavan!`;
+
+    // Update lists asynchronously to improve responsiveness
+    setTimeout(() => {
+      updateLists();
+    }, 0);
+  } catch (error) {
+    console.error("Error during login:", error);
+    const loginMessage = document.getElementById("login-message");
+    loginMessage.textContent =
+      "An error occurred during login. Please try again.";
+    loginMessage.classList.add("error");
+  }
+}
+
+// Logout function
+function logout() {
+  currentUser = null;
+  localStorage.removeItem("currentUser");
+  items = [];
+  document.getElementById("main-content").classList.add("hidden");
+  document.getElementById("login-section").classList.remove("hidden");
+  document.getElementById("username-input").value = "";
+  document.getElementById("login-message").textContent = "";
+}
+
+// Save items for the current user
 function saveItems() {
-  localStorage.setItem("travelItems", JSON.stringify(items));
+  if (currentUser) {
+    const userItemsKey = `travelItems_${currentUser}`;
+    try {
+      localStorage.setItem(userItemsKey, JSON.stringify(items));
+    } catch (error) {
+      console.error("Error saving items to localStorage:", error);
+    }
+  }
 }
 
 function addItem() {
@@ -36,7 +111,6 @@ function addItem() {
   const itemName = input.value.trim();
   const message = document.getElementById("message");
 
-  // Clear previous message and styles
   message.textContent = "";
   message.className = "message";
 
@@ -46,13 +120,12 @@ function addItem() {
     return;
   }
 
-  // Check for duplicates (case-insensitive)
   if (
     items.some((item) => item.name.toLowerCase() === itemName.toLowerCase())
   ) {
     message.textContent = `${itemName} already exists in the list!`;
     message.classList.add("error");
-    input.value = ""; // Clear the input field
+    input.value = "";
     setTimeout(() => {
       message.textContent = "";
       message.classList.remove("error");
@@ -60,55 +133,71 @@ function addItem() {
     return;
   }
 
-  // Add the new item
   const newItem = { name: itemName, packed: false };
   items.push(newItem);
-  input.value = ""; // Clear the input field
+  input.value = "";
   message.textContent = `${itemName} added successfully!`;
   message.classList.add("success");
   setTimeout(() => {
     message.textContent = "";
     message.classList.remove("success");
   }, 2000);
-  saveItems(); // Save to localStorage
+  saveItems();
   updateLists();
 }
 
 function updateLists() {
-  const unpackedList = document.getElementById("unpacked-list");
-  const packedList = document.getElementById("packed-list");
-  unpackedList.innerHTML = "";
-  packedList.innerHTML = "";
-
-  items.forEach((item, index) => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-            <input type="checkbox" onchange="togglePacked(${index})" ${
-      item.packed ? "checked" : ""
-    }>
-            <span>${item.name}</span>
-            <button onclick="deleteItem(${index})">Delete</button>
-        `;
-    if (item.packed) {
-      li.classList.add("packed");
-      packedList.appendChild(li);
-    } else {
-      unpackedList.appendChild(li);
+  try {
+    const unpackedList = document.getElementById("unpacked-list");
+    const packedList = document.getElementById("packed-list");
+    if (!unpackedList || !packedList) {
+      throw new Error("List containers not found");
     }
-  });
+
+    unpackedList.innerHTML = "";
+    packedList.innerHTML = "";
+
+    items.forEach((item, index) => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+              <input type="checkbox" onchange="togglePacked(${index})" ${
+        item.packed ? "checked" : ""
+      }>
+              <span>${item.name}</span>
+              <button onclick="deleteItem(${index})">Delete</button>
+          `;
+      if (item.packed) {
+        li.classList.add("packed");
+        packedList.appendChild(li);
+      } else {
+        unpackedList.appendChild(li);
+      }
+    });
+  } catch (error) {
+    console.error("Error updating lists:", error);
+    const message = document.getElementById("message");
+    message.textContent = "Error updating lists. Please refresh the page.";
+    message.classList.add("error");
+  }
 }
 
 function togglePacked(index) {
   items[index].packed = !items[index].packed;
-  saveItems(); // Save to localStorage
+  saveItems();
   updateLists();
 }
 
 function deleteItem(index) {
   items.splice(index, 1);
-  saveItems(); // Save to localStorage
+  saveItems();
   updateLists();
 }
 
-// Initial render
-updateLists();
+// Check if a user is already logged in
+document.addEventListener("DOMContentLoaded", () => {
+  const savedUser = localStorage.getItem("currentUser");
+  if (savedUser) {
+    document.getElementById("username-input").value = savedUser;
+    login();
+  }
+});

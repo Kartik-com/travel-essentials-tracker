@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Group Suggestions</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="group-login-section" class="login-section">
+      <h2>Join or Create a Group</h2>
+      <p>Enter a group name to share and view travel suggestions.</p>
+      <input
+        type="text"
+        id="group-name-input"
+        placeholder="Enter group name (e.g., TripGroup1)"
+      />
+      <button onclick="joinGroup()">Join Group</button>
+      <p id="group-message" class="message"></p>
+    </div>
+
+    <div id="suggestions-content" class="hidden">
+      <header>
+        <h1>Group Suggestions</h1>
+        <p id="group-welcome-message"></p>
+        <nav>
+          <a href="index.html">Back to Essentials Tracker</a>
+          <button onclick="leaveGroup()">Leave Group</button>
+        </nav>
+      </header>
+      <main>
+        <section class="suggestions-section">
+          <h2><span class="icon">💡</span> Travel Suggestions</h2>
+          <div class="input-section">
+            <input
+              type="text"
+              id="suggestion-input"
+              placeholder="Add a suggestion (e.g., Visit a local market)"
+            />
+            <label
+              ><input type="checkbox" id="anonymous-checkbox" /> Submit
+              anonymously</label
+            >
+            <button onclick="addSuggestion()">Add Suggestion</button>
+            <p id="suggestion-message" class="message"></p>
+          </div>
+          <div class="suggestions-list">
+            <h3>Suggestions</h3>
+            <ul id="suggestions-list"></ul>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="suggestions.js"></script>
+  </body>
+</html>

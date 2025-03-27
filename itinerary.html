@@ -9,7 +9,6 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <!-- Leaflet CSS -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -26,6 +25,7 @@
       </p>
       <nav>
         <a href="index.html">Back to Essentials Tracker</a>
+        <a href="suggestions.html">Suggestions</a>
         <button onclick="scrollToMap()" class="scroll-btn">
           Scroll to Map
         </button>
@@ -34,7 +34,6 @@
     <main>
       <section class="planning-section">
         <h2><span class="icon">📅</span> Your Travel Itinerary</h2>
-        <!-- Quick Navigation -->
         <div class="quick-nav">
           <h3>Jump to Day:</h3>
           <div class="nav-links">
@@ -50,7 +49,6 @@
             <a href="#day-6apr">6 Apr</a>
           </div>
         </div>
-        <!-- Timeline -->
         <div class="timeline">
           <div class="timeline-item" id="day-28mar">
             <div class="timeline-header">
@@ -190,7 +188,6 @@
             </div>
           </div>
         </div>
-        <!-- Travel Tips -->
         <div class="travel-tips">
           <h3>Travel Tips</h3>
           <ul>
@@ -207,7 +204,6 @@
             </li>
           </ul>
         </div>
-        <!-- Map Section -->
         <div class="map-container" id="map-section">
           <h2><span class="icon">🗺️</span> Journey Map</h2>
           <div id="map-loading" class="map-loading">Loading Map...</div>
@@ -215,7 +211,6 @@
         </div>
       </section>
     </main>
-    <!-- Leaflet JS -->
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
@@ -223,6 +218,7 @@
       async
     ></script>
     <script src="https://unpkg.com/leaflet.polyline.decorator@1.6.0/dist/leaflet.polyline.decorator.js"></script>
+    <script src="https://unpkg.com/leaflet.marker.bounce@0.2.1/dist/leaflet.marker.bounce.min.js"></script>
     <script src="itinerary.js"></script>
   </body>
 </html>
