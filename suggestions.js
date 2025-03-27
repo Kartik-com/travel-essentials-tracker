@@ -1,5 +1,8 @@
 // Initialize Parse
-Parse.initialize("YOUR_APPLICATION_ID", "YOUR_JAVASCRIPT_KEY");
+Parse.initialize(
+  "R45ukbqr72fqzId6Z54eJA6NEnnKsLLSLxAm6eEK",
+  "I2Ecepl0Ae8jYsTb62CE6TamdEYU57BJHJp7ovUo"
+);
 Parse.serverURL = "https://parseapi.back4app.com/";
 
 let currentGroup = null;
