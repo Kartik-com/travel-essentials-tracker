@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Travel Itinerary & Map</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+  </head>
+  <body>
+    <header>
+      <h1>Travel Itinerary & Map</h1>
+      <p>
+        Embark on an unforgettable journey from Pune to Mumbai via Dalhousie,
+        Dharamshala, Delhi, Agra, Mathura, and Vrindavan!
+      </p>
+      <nav>
+        <a href="index.html">Back to Essentials Tracker</a>
+        <button onclick="scrollToMap()" class="scroll-btn">
+          Scroll to Map
+        </button>
+      </nav>
+    </header>
+    <main>
+      <section class="planning-section">
+        <h2><span class="icon">📅</span> Your Travel Itinerary</h2>
+        <!-- Quick Navigation -->
+        <div class="quick-nav">
+          <h3>Jump to Day:</h3>
+          <div class="nav-links">
+            <a href="#day-28mar">28 Mar</a>
+            <a href="#day-29mar">29 Mar</a>
+            <a href="#day-30mar">30 Mar</a>
+            <a href="#day-31mar">31 Mar</a>
+            <a href="#day-1apr">1 Apr</a>
+            <a href="#day-2apr">2 Apr</a>
+            <a href="#day-3apr">3 Apr</a>
+            <a href="#day-4apr">4 Apr</a>
+            <a href="#day-5apr">5 Apr</a>
+            <a href="#day-6apr">6 Apr</a>
+          </div>
+        </div>
+        <!-- Timeline -->
+        <div class="timeline">
+          <div class="timeline-item" id="day-28mar">
+            <div class="timeline-header">
+              <h4>28th March - Friday</h4>
+              <span class="weather">☀️ 28°C</span>
+            </div>
+            <div class="timeline-content">
+              <p>📍 Pune to Bandra Terminus (5:00 AM - 10:00 AM, Bus/Cab)</p>
+              <p>
+                🚂 Bandra Terminus to Pathankot (11:00 AM - 12:53 PM, 29th
+                March, Swaraj Express)
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item" id="day-29mar">
+            <div class="timeline-header">
+              <h4>29th March - Saturday</h4>
+              <span class="weather">🌤️ 20°C</span>
+            </div>
+            <div class="timeline-content">
+              <p>📍 Pathankot to Dalhousie (Bus/Cab/Local Transport)</p>
+            </div>
+          </div>
+          <div class="timeline-item" id="day-30mar">
+            <div class="timeline-header">
+              <h4>30th March - Sunday</h4>
+              <span class="weather">🌤️ 18°C</span>
+            </div>
+            <div class="timeline-content">
+              <p>📍 Dalhousie</p>
+              <p>🌄 Morning: 7:00 AM - Khajjiar (Green Fields)</p>
+              <p>🏞️ Afternoon: 12:00 PM - Kalatop (Return from Khajjiar)</p>
+              <p>
+                🌙 Night: 6:00 PM onwards - Local Mall Roads, Food Discovery
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item" id="day-31mar">
+            <div class="timeline-header">
+              <h4>31st March - Monday</h4>
+              <span class="weather">🌤️ 19°C</span>
+            </div>
+            <div class="timeline-content">
+              <p>📍 Dalhousie to Dharamshala (7:10 AM - 2:00 PM, Direct Bus)</p>
+              <p>
+                🌿 Evening: 3:15 PM - Tea Gardens, War Memorial, Local Mall Road
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item" id="day-1apr">
+            <div class="timeline-header">
+              <h4>1st April - Tuesday</h4>
+              <span class="weather">🌤️ 20°C</span>
+            </div>
+            <div class="timeline-content">
+              <p>📍 Dharamshala</p>
+              <p>🌅 Morning: 7:00 AM - Dul Lake</p>
+              <p>🕉️ Afternoon: Dalai Lama, Norbulingka Institute</p>
+              <p>🍽️ Evening: Food Exploration, Local Visit</p>
+            </div>
+          </div>
+          <div class="timeline-item" id="day-2apr">
+            <div class="timeline-header">
+              <h4>2nd April - Wednesday</h4>
+              <span class="weather">☀️ 25°C</span>
+            </div>
+            <div class="timeline-content">
+              <p>📍 Dharamshala to Pathankot (6:15 AM - 10:30/11:00 AM)</p>
+              <p>🚂 Pathankot to Delhi (1:30 PM - 9:25 PM, New Delhi)</p>
+              <p>🏨 Rest in Retiring Room (if needed), Visit Railway Station</p>
+            </div>
+          </div>
+          <div class="timeline-item" id="day-3apr">
+            <div class="timeline-header">
+              <h4>3rd April - Thursday</h4>
+              <span class="weather">☀️ 30°C</span>
+            </div>
+            <div class="timeline-content">
+              <p>📍 Delhi (Hostel Change)</p>
+              <p>
+                🌅 Morning: 9:30 AM - Ashram Dham (Arti, if possible), CP
+                (Connaught Place), Palika Bazaar
+              </p>
+              <p>🏬 Afternoon: Sarojini Nagar (Full Afternoon till 5:00 PM)</p>
+              <p>
+                🌙 Evening: Meena Bazaar, Chatta Chowk, Chandi Chowk (Night
+                Life)
+              </p>
+              <p>🏨 Stay in Delhi</p>
+            </div>
+          </div>
+          <div class="timeline-item" id="day-4apr">
+            <div class="timeline-header">
+              <h4>4th April - Friday</h4>
+              <span class="weather">☀️ 32°C</span>
+            </div>
+            <div class="timeline-content">
+              <p>📍 Delhi to Mathura (7:00 AM - 9:00 AM)</p>
+              <p>🕙 12:00 PM: Freshen Up</p>
+              <p>📍 1:00 PM: Vrindavan - Nidhi Van</p>
+              <p>
+                🕉️ Temples Start at 4:00 PM (If time permits, visit Mata
+                Vaishnav Dham at 2:30 PM)
+              </p>
+              <p>
+                🕍 Temples to Visit: Prem Mandir, Lotus Temple (visible from
+                outside), ISKCON, Pagal Baba Mandir, Birla Temple, Kach Mandir
+              </p>
+              <p>
+                ⚠️ Note: Vrindavan is a small town, temples close early, so plan
+                quickly. Check last bus/auto for return to Mathura.
+              </p>
+              <p>🌙 10:00 PM: Ensure all Vrindavan temples are completed</p>
+            </div>
+          </div>
+          <div class="timeline-item" id="day-5apr">
+            <div class="timeline-header">
+              <h4>5th April - Saturday</h4>
+              <span class="weather">☀️ 34°C</span>
+            </div>
+            <div class="timeline-content">
+              <p>📍 Mathura to Agra (6:26 AM - 7:40 AM, Bus)</p>
+              <p>🏰 8:00 AM: Taj Mahal (Free Booking)</p>
+              <p>🏯 Visit: Red Fort, Etmad-ud-Daula (Baby Taj)</p>
+              <p>🍬 Buy: Petha (Local Sweet)</p>
+              <p>📍 Return to Mathura by 5:00 PM</p>
+              <p>🕉️ Evening: Krishna Janam Bhumi</p>
+            </div>
+          </div>
+          <div class="timeline-item" id="day-6apr">
+            <div class="timeline-header">
+              <h4>6th April - Sunday</h4>
+              <span class="weather">☀️ 32°C</span>
+            </div>
+            <div class="timeline-content">
+              <p>📍 Mathura to Mumbai (7:28 AM - 10:00 AM, 7th April)</p>
+            </div>
+          </div>
+        </div>
+        <!-- Travel Tips -->
+        <div class="travel-tips">
+          <h3>Travel Tips</h3>
+          <ul>
+            <li>
+              🕒 Always check temple timings in Vrindavan as they close early.
+            </li>
+            <li>
+              🚍 Confirm the last bus/auto from Vrindavan to Mathura to avoid
+              being stranded.
+            </li>
+            <li>📸 Book Taj Mahal tickets in advance to avoid long queues.</li>
+            <li>
+              🍴 Try local delicacies like Petha in Agra and Kachori in Mathura.
+            </li>
+          </ul>
+        </div>
+        <!-- Map Section -->
+        <div class="map-container" id="map-section">
+          <h2><span class="icon">🗺️</span> Journey Map</h2>
+          <div id="map-loading" class="map-loading">Loading Map...</div>
+          <div id="map" class="map"></div>
+        </div>
+      </section>
+    </main>
+    <!-- Leaflet JS -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+      async
+    ></script>
+    <script src="https://unpkg.com/leaflet.polyline.decorator@1.6.0/dist/leaflet.polyline.decorator.js"></script>
+    <script src="itinerary.js"></script>
+  </body>
+</html>
