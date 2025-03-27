@@ -16,6 +16,14 @@
       crossorigin=""
     />
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <!-- Load Leaflet scripts synchronously -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="https://unpkg.com/leaflet.polyline.decorator@1.6.0/dist/leaflet.polyline.decorator.js"></script>
+    <script src="https://unpkg.com/leaflet.marker.bounce@0.2.1/dist/leaflet.marker.bounce.min.js"></script>
   </head>
   <body>
     <header>
@@ -212,14 +220,6 @@
         </div>
       </section>
     </main>
-    <script
-      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-      crossorigin=""
-      async
-    ></script>
-    <script src="https://unpkg.com/leaflet.polyline.decorator@1.6.0/dist/leaflet.polyline.decorator.js"></script>
-    <script src="https://unpkg.com/leaflet.marker.bounce@0.2.1/dist/leaflet.marker.bounce.min.js"></script>
     <script src="itinerary.js"></script>
   </body>
 </html>
